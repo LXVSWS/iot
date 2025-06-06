@@ -3,7 +3,8 @@ Vagrant.configure("2") do |config|
 
   provision_script = <<-SHELL
     sudo apt-get update
-    sudo apt-get install -y linux-headers-686-pae build-essential dkms
+    sudo apt-get install -y build-essential dkms
+	sudo apt-get install -y linux-headers-686-pae
   SHELL
 
   config.vm.define "lwyssS" do |s|
