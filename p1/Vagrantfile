@@ -14,14 +14,14 @@ Vagrant.configure("2") do |config|
 
     s.vm.provision "shell", inline: <<-SHELL
       sudo apt-get update
-      sudo apt-get install -y build-essential dkms linux-headers-$(uname -r) curl
+      sudo apt-get install -y build-essential dkms linux-headers-amd64 curl
 
       # Install k3s as server
       curl -sfL https://get.k3s.io | sh -
 
       # Wait for the token to be created
       while [ ! -f /var/lib/rancher/k3s/server/node-token ]; do
-        echo "Waiting server token..."
+        echo "Waiting for server token..."
         sleep 2
       done
 
@@ -49,16 +49,22 @@ Vagrant.configure("2") do |config|
 
     sw.vm.provision "shell", inline: <<-SHELL
       sudo apt-get update
-      sudo apt-get install -y build-essential dkms linux-headers-$(uname -r) curl
+      sudo apt-get install -y build-essential dkms linux-headers-amd64 curl
 
       # Wait until the shared token file exists
       while [ ! -f /vagrant/server_token ]; do
-        echo "Waiting server token..."
+        echo "Waiting for server token..."
         sleep 2
       done
 
       TOKEN=$(cat /vagrant/server_token)
       SERVER_IP=192.168.56.110
+
+      # Wait until the server is reachable
+      until curl -sk https://$SERVER_IP:6443/healthz; do
+        echo "Waiting for server..."
+        sleep 2
+      done
 
       # Join K3s cluster as agent
       curl -sfL https://get.k3s.io | K3S_URL="https://$SERVER_IP:6443" K3S_TOKEN="$TOKEN" sh -
