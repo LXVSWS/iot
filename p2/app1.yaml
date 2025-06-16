@@ -13,8 +13,8 @@ spec:
         app: app-one
     spec:
       containers:
-      - name: nginx
-        image: nginx
+      - name: hello-kubernetes
+        image: paulbouwer/hello-kubernetes
         ports:
         - containerPort: 80
 ---
