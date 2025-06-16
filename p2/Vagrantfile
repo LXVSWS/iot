@@ -23,7 +23,8 @@ Vagrant.configure("2") do |config|
       sudo chown -R vagrant:vagrant /home/vagrant/.kube
       echo 'export KUBECONFIG=$HOME/.kube/config' >> /home/vagrant/.bashrc
 
-      # Apply the manifest file and the Ingress file
+      # Wait k3s then apply manifests
+	  until kubectl get nodes; do sleep 2; done
       kubectl apply -f /vagrant/app1.yaml
       kubectl apply -f /vagrant/ingress.yaml
       echo "K3s server is ready"
