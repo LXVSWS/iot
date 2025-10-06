@@ -4,7 +4,7 @@
 kubectl config use-context k3d-mycluster
 
 # Start port-forwarding app service
-kubectl -n dev port-forward svc/app 8888:80 &
+kubectl -n dev port-forward svc/app 8888:80 > /dev/null 2>&1 &
 PID_APP=$!
 
 echo ""
