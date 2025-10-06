@@ -23,17 +23,20 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 echo "✅ K3d & Argo CD installed, namespaces created"
 echo "⏳ Waiting for Argo CD server to be ready..."
 
+# Wait for Argo CD server to be ready
 kubectl -n argocd wait --for=condition=ready pod -l app.kubernetes.io/name=argocd-server --timeout=120s
 
+# Apply Argo CD Application manifest
+kubectl apply -f argo.yaml
+
 # Start port-forwarding Argo CD server (in background)
-echo "🚪 Starting port-forward for Argo CD UI at https://localhost:8080 ..."
 kubectl -n argocd port-forward svc/argocd-server 8080:443 >/dev/null 2>&1 &
 
 # Get Argo CD admin password
 ARGOCD_PASS=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
 
 echo ""
-echo "🎉 Argo CD UI is accessible at: https://localhost:8080"
+echo "🎉 Argo CD GUI is accessible at: https://localhost:8080"
 echo "    Username: admin"
 echo "    Password: $ARGOCD_PASS"
 echo ""
