@@ -20,9 +20,6 @@ kubectl create namespace dev
 # Install Argo CD
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 
-echo "✅ K3d & Argo CD installed, namespaces created"
-echo "⏳ Waiting for Argo CD server to be ready..."
-
 # Wait for Argo CD server to be ready
 kubectl -n argocd wait --for=condition=ready pod -l app.kubernetes.io/name=argocd-server --timeout=120s
 
@@ -40,3 +37,8 @@ echo "🎉 Argo CD GUI is accessible at: https://localhost:8080"
 echo "    Username: admin"
 echo "    Password: $ARGOCD_PASS"
 echo ""
+
+# Start port-forwarding the app service in the background
+kubectl -n dev port-forward svc/app 8888:80 >/dev/null 2>&1 &
+
+echo "🚀 App is accessible at: http://localhost:8888"
