@@ -4,11 +4,11 @@
 kubectl config use-context k3d-mycluster
 
 # Start port-forwarding Argo CD server
-kubectl -n argocd port-forward svc/argocd-server 8080:443 &
+kubectl -n argocd port-forward svc/argocd-server 8080:443 > /dev/null 2>&1 &
 PID_ARGOCD=$!
 
 # Start port-forwarding app service
-kubectl -n dev port-forward svc/app 8888:80 &
+kubectl -n dev port-forward svc/app 8888:80 > /dev/null 2>&1 &
 PID_APP=$!
 
 # Get Argo CD admin password
