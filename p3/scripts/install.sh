@@ -25,6 +25,6 @@ echo "⌛ Waiting for Argo CD server to be ready..."
 kubectl -n argocd wait --for=condition=ready pod -l app.kubernetes.io/name=argocd-server --timeout=120s
 
 # Apply Argo CD Application manifest
-kubectl apply -f argo.yaml
+kubectl apply -f ../confs/argo.yaml
 
 echo "✅ Initial setup complete"
