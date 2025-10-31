@@ -6,9 +6,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/LXVSWS/iot
+    repoURL: https://github.com/lxvsws/mmatthie
     targetRevision: HEAD
-    path: p3/confs
   destination:
     server: https://kubernetes.default.svc
     namespace: dev
